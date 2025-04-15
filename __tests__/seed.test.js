@@ -1,23 +1,25 @@
-import { end, query } from '../db/connection.js';
+import db from '../db/connection.js';
 import seed from '../db/seeds/seed.js';
 import data from '../db/data/test-data/index.js';
 
 beforeAll(() => seed(data));
-afterAll(() => end());
+afterAll(() => db.end());
 
 describe('seed', () => {
   describe('topics table', () => {
-    test('topics table exists', () => {
-      return query(
-        `SELECT EXISTS (
+    test.only('topics table exists', () => {
+      return db
+        .query(
+          `SELECT EXISTS (
             SELECT FROM 
                 information_schema.tables 
             WHERE 
                 table_name = 'topics'
             );`
-      ).then(({ rows: [{ exists }] }) => {
-        expect(exists).toBe(true);
-      });
+        )
+        .then(({ rows: [{ exists }] }) => {
+          expect(exists).toBe(true);
+        });
     });
 
     test('topics table has slug column as varying character', () => {
