@@ -6,8 +6,8 @@ beforeAll(() => seed(data));
 afterAll(() => db.end());
 
 describe('seed', () => {
-  describe('topics table', () => {
-    test.only('topics table exists', () => {
+  describe.only('topics table', () => {
+    test('topics table exists', () => {
       return db
         .query(
           `SELECT EXISTS (
@@ -23,53 +23,61 @@ describe('seed', () => {
     });
 
     test('topics table has slug column as varying character', () => {
-      return query(
-        `SELECT *
+      return db
+        .query(
+          `SELECT *
             FROM information_schema.columns
             WHERE table_name = 'topics'
             AND column_name = 'slug';`
-      ).then(({ rows: [column] }) => {
-        expect(column.column_name).toBe('slug');
-        expect(column.data_type).toBe('character varying');
-      });
+        )
+        .then(({ rows: [column] }) => {
+          expect(column.column_name).toBe('slug');
+          expect(column.data_type).toBe('character varying');
+        });
     });
 
     test('topics table has slug column as the primary key', () => {
-      return query(
-        `SELECT column_name
+      return db
+        .query(
+          `SELECT column_name
             FROM information_schema.table_constraints AS tc
             JOIN information_schema.key_column_usage AS kcu
             ON tc.constraint_name = kcu.constraint_name
             WHERE tc.constraint_type = 'PRIMARY KEY'
             AND tc.table_name = 'topics';`
-      ).then(({ rows: [{ column_name }] }) => {
-        expect(column_name).toBe('slug');
-      });
+        )
+        .then(({ rows: [{ column_name }] }) => {
+          expect(column_name).toBe('slug');
+        });
     });
 
     test('topics table has description column as varying character', () => {
-      return query(
-        `SELECT column_name, data_type, column_default
+      return db
+        .query(
+          `SELECT column_name, data_type, column_default
             FROM information_schema.columns
             WHERE table_name = 'topics'
             AND column_name = 'description';`
-      ).then(({ rows: [column] }) => {
-        expect(column.column_name).toBe('description');
-        expect(column.data_type).toBe('character varying');
-      });
+        )
+        .then(({ rows: [column] }) => {
+          expect(column.column_name).toBe('description');
+          expect(column.data_type).toBe('character varying');
+        });
     });
 
     test('topics table has img_url column of varying character of max length 1000', () => {
-      return query(
-        `SELECT column_name, data_type, character_maximum_length
+      return db
+        .query(
+          `SELECT column_name, data_type, character_maximum_length
             FROM information_schema.columns
             WHERE table_name = 'topics'
             AND column_name = 'img_url';`
-      ).then(({ rows: [column] }) => {
-        expect(column.column_name).toBe('img_url');
-        expect(column.data_type).toBe('character varying');
-        expect(column.character_maximum_length).toBe(1000);
-      });
+        )
+        .then(({ rows: [column] }) => {
+          expect(column.column_name).toBe('img_url');
+          expect(column.data_type).toBe('character varying');
+          expect(column.character_maximum_length).toBe(1000);
+        });
     });
   });
 
