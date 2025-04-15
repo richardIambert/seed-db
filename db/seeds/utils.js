@@ -1,8 +1,7 @@
 import { config } from 'dotenv';
-import { resolve } from 'node:path';
 
 export const setEnvironment = () => {
-  const path = resolve(`${__dirname}/../.env.${process.env.NODE_ENV || 'development'}`);
+  const path = `${process.cwd()}/.env.${process.env.NODE_ENV || 'development'}`;
   config({ path });
 };
 

@@ -1,9 +1,9 @@
-import { Pool } from 'pg';
-import { setEnvironment } from './seeds/utils';
+import pg from 'pg';
+import { setEnvironment } from './seeds/utils.js';
 
 setEnvironment();
 
-const db = new Pool();
+const db = new pg.Pool();
 
 if (!process.env.PGDATABASE) {
   throw new Error('No PGDATABASE configured');
