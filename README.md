@@ -1,3 +1,38 @@
-# NC News Seeding 🌱
+# seed-db 🌱
 
-- Instructions for this sprint can be found at 👉 https://l2c.northcoders.com/courses/be/seeding-nc-news
+A database seeding utility for postgres.
+
+## Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/richardIambert/seed-db.git
+cd seed-db
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Setup environment variables
+
+Create `.env.development` and `.env.test` files in the project root directory.
+
+```.env
+# .env.development
+PGDATABASE=<name_of_your_development_database>
+```
+
+```.env
+# .env.test
+PGDATABASE=<name_of_your_test_database>
+```
+
+### 4. Run the utility
+
+```bash
+npm run setup-dbs
+```
