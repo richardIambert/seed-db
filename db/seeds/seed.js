@@ -2,6 +2,7 @@ import db from '../connection.js';
 
 const seed = async ({ topicData, userData, articleData, commentData }) => {
   // drop tables
+  await db.query(`DROP TABLE IF EXISTS comments;`);
   await db.query(`DROP TABLE IF EXISTS articles;`);
   await db.query(`DROP TABLE IF EXISTS users;`);
   await db.query(`DROP TABLE IF EXISTS topics;`);
@@ -34,6 +35,19 @@ const seed = async ({ topicData, userData, articleData, commentData }) => {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       votes INT DEFAULT 0,
       article_img_url VARCHAR(1000) NOT NULL
+    );
+  `);
+  // comments table
+  await db.query(`
+    CREATE TABLE comments (
+      comment_id SERIAL PRIMARY KEY,
+      article_id INT,
+      FOREIGN KEY (article_id) REFERENCES articles(article_id),
+      body TEXT NOT NULL,
+      votes INT DEFAULT 0,
+      author VARCHAR(255),
+      FOREIGN KEY (author) REFERENCES users(username),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
 };
