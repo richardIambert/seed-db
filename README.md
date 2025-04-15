@@ -33,6 +33,9 @@ PGDATABASE=<name_of_your_test_database>
 
 ### 4. Run the utility
 
+Ensure postgres is running and run the following npm scripts:
+
 ```bash
 npm run setup-dbs
+npm run seed-dev
 ```
