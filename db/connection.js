@@ -1,7 +1,7 @@
+import { config } from 'dotenv';
 import pg from 'pg';
-import { setEnvironment } from './seeds/utils.js';
 
-setEnvironment();
+config({ path: `${process.cwd()}/.env.${process.env.NODE_ENV || 'development'}` });
 
 const db = new pg.Pool();
 

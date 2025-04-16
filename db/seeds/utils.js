@@ -1,11 +1,5 @@
-import { config } from 'dotenv';
 import format from 'pg-format';
 import db from '../connection.js';
-
-export const setEnvironment = () => {
-  const path = `${process.cwd()}/.env.${process.env.NODE_ENV || 'development'}`;
-  config({ path });
-};
 
 export const convertTimestampToDate = ({ created_at, ...otherProperties }) => {
   if (!created_at) return { ...otherProperties };
