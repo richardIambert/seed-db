@@ -39,3 +39,7 @@ Ensure postgres is running and run the following npm scripts:
 npm run setup-dbs
 npm run seed-dev
 ```
+
+### 5. Check tables have been created
+
+You can check that the seed was successful by running `npm run query-test-db` or `npm run query-dev-db` and then viewing `test-db.results.txt` and `dev-db.results.txt` respectively.

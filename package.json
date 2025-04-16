@@ -9,7 +9,9 @@
     "test": "jest --verbose",
     "prepare": "husky install",
     "start": "node listen.js",
-    "test-seed": "jest seed.test.js"
+    "test-seed": "jest seed.test.js",
+    "query-test-db": "psql nc_news_test -f ./__tests__/queries.sql > test-db.results.txt",
+    "query-dev-db": "psql nc_news -f ./__tests__/queries.sql > dev-db.results.txt"
   },
   "keywords": [
     "databases",

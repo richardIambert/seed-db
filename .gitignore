@@ -174,4 +174,7 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
+# Results from psql queries
+*.results.txt
+
 # End of https://www.toptal.com/developers/gitignore/api/node,macos,dotenv
