@@ -1,4 +1,4 @@
-import { convertTimestampToDate } from '../db/seeds/utils.js';
+import { convertTimestampToDate, createRef } from '../db/seeds/utils.js';
 
 describe('convertTimestampToDate', () => {
   test('returns a new object', () => {
@@ -33,5 +33,38 @@ describe('convertTimestampToDate', () => {
     const result = convertTimestampToDate(input);
     const expected = { key: 'value' };
     expect(result).toEqual(expected);
+  });
+});
+describe('createRef', () => {
+  test('should return an empty object when passed an empty array argument', () => {
+    const input = [];
+    const actual = createRef(input, '', '');
+    expect(actual).toEqual({});
+  });
+  test("should return and empty object if the key isn't found in any of the array argument's objects", () => {
+    const input = [
+      { notthisone: 42, orthisone: 13 },
+      { notthisone: 42, orthisone: 13 },
+      { notthisone: 42, orthisone: 13 },
+    ];
+    const actual = createRef(input, 'lookingforthisaskey', 'lookingforthisasvalue');
+    expect(actual).toEqual({});
+  });
+  test('should return an object with a single property if passed an array containing a single object that has property keys matching the second and third arguments', () => {
+    const input = [{ defothisone: 42, andthisone: 7 }];
+    const actual = createRef(input, 'defothisone', 'andthisone');
+    expect(actual).toEqual({
+      42: 7,
+    });
+  });
+  test('should not add a property for an object in the argument array that has no property keys matching the second and third arguments', () => {
+    const input = [
+      { defothisone: 42, andthisone: 7 },
+      { butnotthisone: 13, orthisone: 666 },
+    ];
+    const actual = createRef(input, 'defothisone', 'andthisone');
+    expect(actual).toEqual({
+      42: 7,
+    });
   });
 });

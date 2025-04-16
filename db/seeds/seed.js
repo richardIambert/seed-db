@@ -1,6 +1,5 @@
-import format from 'pg-format';
 import db from '../connection.js';
-import { convertTimestampToDate, createTable } from './utils.js';
+import { convertTimestampToDate, createRef, createTable } from './utils.js';
 
 const seed = async ({ topicData, userData, articleData, commentData }) => {
   // drop tables
@@ -43,7 +42,7 @@ const seed = async ({ topicData, userData, articleData, commentData }) => {
   // articles
   // =======================
 
-  await createTable(
+  const results = await createTable(
     'articles',
     [
       'article_id SERIAL PRIMARY KEY',
@@ -69,6 +68,7 @@ const seed = async ({ topicData, userData, articleData, commentData }) => {
   // comments
   // =======================
 
+  const lookup = createRef(results.rows, 'title', 'article_id');
   await createTable(
     'comments',
     [
@@ -82,16 +82,11 @@ const seed = async ({ topicData, userData, articleData, commentData }) => {
       'created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
     ],
     ['article_id', 'body', 'votes', 'author', 'created_at'],
-    await Promise.all(
-      commentData.map(async (comment) => {
-        const { article_title, body, votes, author, created_at } = convertTimestampToDate(comment);
-        const result = await db.query(
-          format(`SELECT article_id FROM articles WHERE title = %L`, article_title)
-        );
-        const article_id = result.rows[0].article_id;
-        return [article_id, body, votes, author, created_at];
-      })
-    )
+    commentData.map((comment) => {
+      const { article_title, body, votes, author, created_at } = convertTimestampToDate(comment);
+      const article_id = lookup[article_title];
+      return [article_id, body, votes, author, created_at];
+    })
   );
 };
 
